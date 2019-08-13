@@ -1,6 +1,9 @@
 import turtle
 import csv
 
+#Alise Bruevich and Amita Stowitts
+#This code will track the hurricane based on Irma data
+
 def irma_setup():
     """Creates the Turtle and the Screen with the map background
        and coordinate system set to match latitude and longitude.
@@ -29,6 +32,7 @@ def irma_setup():
 
     
     t = turtle.Turtle()
+    t.speed(1)
     wn.register_shape("images/hurricane.gif")
     t.shape("images/hurricane.gif")
 
@@ -50,24 +54,39 @@ def irma():
         # This line gives you an "iterator" you can use to get each line
         # in the file.
         pointreader = csv.reader(csvfile)
-
-        # You'll need to add some code here, before the loop
-        # One thing you'll need to figure out how to do is to
-        # skip the first line of the file (which is the header).
-        # You might use a boolean variable, or you can
-        # look into Python's built-in next function
-        #(https://docs.python.org/3/library/functions.html#next)
-        # pointreader is an iterator
+        next(pointreader)        
 
         for row in pointreader:
+
             # row is a list representing each line in the csv file
             # Each comma separated element is in its own index position
             # This code just prints out the date and time elements of each
             # row in the file.
             # Make sure you understand what is happening here.
             # Then, you'll need to change this code
-            print("Date:", row[0], "Time:", row[1])
+            print("Lat:", row[2], "Lon:", row[3], "Wind:", row[4])
 
+            t.setpos(float(row[3]), float(row[2]))
+            
+            #based on wind speeds changes color and width of line
+            
+            if (int(row[4]) >= 157):
+                t.color("red")
+                t.pensize(10)
+            elif (int(row[4]) >= 130):
+                t.color("orange")
+                t.pensize(8)
+            elif (int(row[4]) >= 111):
+                t.color("yellow")
+                t.pensize(6)                          
+            elif (int(row[4]) >= 96):
+                t.color("green")
+                t.pensize(4)
+            elif (int(row[4]) >= 74):
+                t.color("blue")
+                t.pensize(2)
+            else:
+                t.color("white")
 
 
     # Hack to make sure a reference to the background image stays around
@@ -80,3 +99,4 @@ def irma():
 
 if __name__ == "__main__":
     bg=irma()
+
